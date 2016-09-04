@@ -1,0 +1,284 @@
+package assembler;
+
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.util.Scanner;
+
+/**
+ * Parser
+ * @author akpan
+ * Objective: 
+ * 	- reads an assembly language command
+ *  - parses it
+ *  - provides convenient access to the command's components (fields and symbols)
+ *  - removes all white spaces and comments
+ */
+public class Parser {
+	
+	// create a buffered reader
+	private Scanner scanner = null;
+	private String currentCommand = "";
+	
+	/**
+	 * commandType
+	 * @author akpan
+	 * maintains the list of available command types recognized by the assembler
+	 */
+	public enum CommandType {A_COMMAND, C_COMMAND, L_COMMAND};
+	
+	/**
+	 * getCurrentCommand
+	 * @return as string representing the command initiated
+	 */
+	public String getCurrentCommand(){
+		return this.currentCommand;
+	}
+	
+	/**
+	 * Parser
+	 * @param file
+	 * Objective: 
+	 * 	- opens the input file/stream
+	 *  - prepares file to be parsed
+	 */
+	public Parser(File file){
+		try{
+			scanner = new Scanner(file);
+			
+		}catch(FileNotFoundException e){
+			e.printStackTrace();
+		}
+	}
+	/**
+	 * hasMoreCommands
+	 * @return
+	 * Output: true/false
+	 * Objective: returns true if there are more commands in the output; otherwise, false.
+	 */
+	public boolean hasMoreCommands(){
+		return scanner.hasNext();
+	}
+	
+	/**
+	 * advance
+	 * Objective: 
+	 *  - Reads the next command from the input
+	 *  - Makes it the current command. 
+	 *  - Should be called only if hasMoreCommand() is true
+	 *  - Initially, there is no current command.
+	 */
+	public void advance(){
+		if(hasMoreCommands()){
+			currentCommand = scanner.nextLine().trim();
+		}
+	}
+	
+	/**
+	 * commandType
+	 * @return
+	 * Objective: returns the type of the current command:
+	 * 	- A_COMMAND: for @Xxx where Xxx is either a symbol or a decimal number
+	 *  - C_COMMAND: for dest = comp; jump
+	 *  - L_COMMAND: (actually, pseudo-command for (Xxx) where Xxx is a symbol
+	 */
+	
+	public CommandType commandType(){
+		if(currentCommand.charAt(0) == '@')
+			return CommandType.A_COMMAND;
+		else if(currentCommand.charAt(0) == '(')
+			return CommandType.L_COMMAND;
+		else
+			return CommandType.C_COMMAND;
+	}
+	/**
+	 * symbol
+	 * @return
+	 * Objective: 
+	 * 	- returns the symbol or decimal Xxx of current command @Xxx or (Xxx).
+	 *  - Should be called only when commandType() is A_COMMAND or L_COMMAND.
+	 */
+	public String symbol(){
+		if(currentCommand.charAt(0) == '@')
+			return currentCommand.substring(1);
+		else 
+			return currentCommand.substring(1, currentCommand.length()-1);
+	}
+	/**
+	 * dest
+	 * @return
+	 * Objective: 
+	 *  - returns the dest mnemonic in the current C-command (8 possibilities).
+	 *  - should be called only when commandType() is C_COMMAND
+	 */
+	public String dest(){
+		String result = "";
+		if(currentCommand.indexOf('=') != -1){
+			String dest = currentCommand.substring(0, currentCommand.indexOf('='));
+			switch(dest){
+			case "M": 
+				result = "M";
+				break;
+			case "D":
+				result = "D";
+				break;
+			case "MD": 
+				result = "MD";
+				break;
+			case "A":
+				result = "A";
+				break;
+			case "AM": 
+				result = "AM";
+				break;
+			case "AD":
+				result = "AD";
+				break;
+			case "AMD":
+				result = "AMD";
+				break;
+			}
+		}else{
+			result = "null";
+		}
+		return result;
+	}
+	/**
+	 * comp
+	 * @return
+	 * Objective: 
+	 * 	- returns the comp mnemonic in the current C-command (28 possibilities). 
+	 *  - should be called only when commandType() is C_COMMAND
+	 */
+	public String comp(){
+		String result = "";
+		if(currentCommand.indexOf('=') != -1){
+			String composite = currentCommand.substring(currentCommand.indexOf('=')+1);
+			switch(composite){
+			case "0" :
+				result = "0";
+				break;
+			case "1" :
+				result = "1";
+				break;
+			case "-1" : 
+				result = "-1";
+				break;
+			case "D" : 
+				result = "D";
+				break;
+			case "A" : 
+				result = "A";
+				break;
+			case "!D" : 
+				result = "!D";
+				break;
+			case "!A" : 
+				result = "!A";
+				break;
+			case "-D" : 
+				result = "-D";
+				break;
+			case "-A" : 
+				result = "-A";
+				break;
+			case "D+1" : 
+				result = "D+1";
+				break;
+			case "A+1" : 
+				result = "A+1";
+				break;
+			case "D-1" : 
+				result = "D-1";
+				break;
+			case "A-1" : 
+				result = "A-1";
+				break;
+			case "D+A" : 
+				result = "D+A";
+				break;
+			case "D-A" : 
+				result = "D-A";
+				break;
+			case "A-D" : 
+				result = "A-D";
+				break;
+			case "D&A" : 
+				result = "D&A";
+				break;
+			case "D|A" : 
+				result = "D|A";
+				break;
+			case "M" : 
+				result = "M";
+				break;
+			case "!M" : 
+				result = "!M";
+				break;
+			case "-M" : 
+				result = "-M";
+				break;
+			case "M+1" : 
+				result = "M+1";
+				break;
+			case "M-1" : 
+				result = "M-1";
+				break;
+			case "D+M" : 
+				result = "D+M";
+				break;
+			case "D-M" : 
+				result = "D-M";
+				break;
+			case "M-D" : 
+				result = "M-D";
+				break;
+			case "D&M" : 
+				result = "D&M";
+				break;
+			case "D|M" : 
+				result = "D|M";
+				break;
+			}
+		}
+		return result;
+	}
+	/**
+	 * jump
+	 * @return
+	 * Objective: 
+	 *  - returns the jump mnemonic in the current C-command (8 possibilities)
+	 *  - should be called only when commandType() is C_COMMAND
+	 */
+	public String jump(){
+		String result = "";
+		if(currentCommand.indexOf(';') != -1){
+			String jump = currentCommand.substring(currentCommand.indexOf(';')+1);
+			switch(jump){
+			case "JGT": 
+				result = "JGT";
+				break;
+			case "JEQ":
+				result = "JEQ";
+				break;
+			case "JGE":
+				result = "JGE";
+				break;
+			case "JLT":
+				result = "JLT";
+				break;
+			case "JNE":
+				result = "JNE";
+				break;
+			case "JLE":
+				result = "JLE";
+				break;
+			case "JMP":
+				result = "JMP";
+				break;
+			}
+		}else{
+			result = "null";
+		}
+		return result;
+	}
+}

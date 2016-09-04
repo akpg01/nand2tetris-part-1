@@ -1,0 +1,10 @@
+package assembler;
+/**
+ * SymbolTable
+ * @author akpan
+ * This class handles symbols conversion.
+ */
+
+public class SymbolTable {
+
+}

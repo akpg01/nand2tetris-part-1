@@ -1,0 +1,54 @@
+package assembler;
+
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileReader;
+import java.io.IOException;
+
+/**
+ * ReadFile
+ * @author akpan
+ * The class reads a filename entered at the command prompt.
+ * Objectives:
+ * 	- verifies that a filename has been entered
+ *  - confirms that the file extension is .asm
+ *  - attempts to read the file.
+ */
+
+public class ReadFile {
+	public static void main(String[] args) {
+		// verify that a .asm file has been supplied when program is executed
+		if(args.length < 0)
+			System.err.println("Please enter a valid filename");
+		// read file name
+		File inFile = new File(args[0]);
+		
+		// check that file extension is .asm
+		String filename= inFile.toString();
+		String file_extension = filename.substring(filename.lastIndexOf("."));
+		if(!file_extension.equals(".asm")){
+			System.err.println("File extension must be \".asm.\"");
+			System.exit(1);
+		}
+		// send to parser class. 
+		Parser parser = new Parser(inFile);
+		BufferedReader br = null;
+		try{
+			String currentLine;
+			br = new BufferedReader(new FileReader(inFile));
+			while((currentLine = br.readLine()) != null){
+				System.out.println(currentLine);
+			}
+		}catch(IOException e){
+			e.printStackTrace();
+		}finally{
+			try{
+				if(br != null)
+					br.close();
+			}catch(IOException ex){
+				ex.printStackTrace();
+			}
+		}
+	}
+
+}

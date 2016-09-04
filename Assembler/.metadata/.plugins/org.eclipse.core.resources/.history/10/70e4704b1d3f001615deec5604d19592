@@ -1,0 +1,44 @@
+package assembler;
+
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileReader;
+import java.io.IOException;
+
+public class ReadFile {
+
+	public static void main(String[] args) {
+		// verify that a .asm file has been supplied when program is executed
+		if(args.length < 0)
+			System.err.println("Please enter a filename");
+		// read file name
+		File inFile = new File(args[0]);
+		
+		// check that file extension is .asm
+		String filename= inFile.toString();
+		String file_extension = filename.substring(filename.lastIndexOf("."));
+		System.out.println("This is the file extension: " + file_extension);
+		if(!file_extension.equals(".asm"))
+			System.err.println("The file extension is not .asm.");
+		
+		// read file
+		BufferedReader br = null;
+		try{
+			String currentLine;
+			br = new BufferedReader(new FileReader(inFile));
+			while((currentLine = br.readLine()) != null){
+				System.out.println(currentLine);
+			}
+		}catch(IOException e){
+			e.printStackTrace();
+		}finally{
+			try{
+				if(br != null)
+					br.close();
+			}catch(IOException ex){
+				ex.printStackTrace();
+			}
+		}
+	}
+
+}

@@ -1,0 +1,10 @@
+package assembler;
+/**
+ * Code
+ * @author akpan
+ * Objective: 
+ * 	- provides the binary codes of all the assembly mnemonics.
+ */
+public class Code {
+
+}

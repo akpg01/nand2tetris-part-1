@@ -1,0 +1,23 @@
+package assembler;
+
+import java.util.Hashtable;
+
+/**
+ * SymbolTable
+ * @author akpan
+ * Maintains a correspondence between symbolic labels and numeric addresses.
+ */
+
+public class SymbolTable {
+	
+	// symbol table 
+	Hashtable<String, Integer>symbolTable;
+	
+	/**
+	 * constructor
+	 * - creates a new empty symbol table
+	 */
+	public SymbolTable(){
+		symbolTable = new Hashtable<String, Integer>();
+	}
+}

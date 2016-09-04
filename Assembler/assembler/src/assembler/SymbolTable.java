@@ -1,0 +1,86 @@
+package assembler;
+
+import java.util.Hashtable;
+
+/**
+ * SymbolTable
+ * @author akpan
+ * Maintains a correspondence between symbolic labels and numeric addresses.
+ */
+
+public class SymbolTable {
+	
+	// symbol table 
+	private Hashtable<String, Integer>symbolTable;
+	
+	/**
+	 * constructor
+	 * - creates a new empty symbol table
+	 */
+	public SymbolTable(){
+		symbolTable = new Hashtable<String, Integer>();
+		// predefined symbols part a
+		predefSymbol_a();
+		// predefined symbols part b
+		predefSymbol_b();
+	}
+	
+	/**
+	 * addEntry
+	 * @param symbol
+	 * @param address
+	 * Objective: 
+	 * 	- adds the pair (symbol, address) to the table
+	 */
+	public void addEntry(String symbol, int address){
+		symbolTable.put(symbol, address);
+	}
+	
+	/**
+	 * contains
+	 * @param symbol
+	 * @return boolean
+	 * Objective:
+	 * 	- Returns true if the table contains a symbol; otherwise, false.
+	 */
+	public boolean contains(String symbol){
+		return symbolTable.containsKey(symbol);
+	}
+	
+	/**
+	 * getAddress
+	 * @param address
+	 * @return string
+	 * Objective:
+	 * 	- Returns the address associated with the symbol.
+	 */
+	public int getAddress(String symbol){
+		return symbolTable.get(symbol);
+	}
+	
+	/**
+	 * predefSymbol_a
+	 * Objective:
+	 * 	- Adds the first group of predefined symbols to the symbol table
+	 */
+	private void predefSymbol_a(){
+		addEntry("SP", 0);
+		addEntry("LCL", 1);
+		addEntry("ARG", 2);
+		addEntry("THIS", 3);
+		addEntry("THAT", 4);
+		addEntry("SCREEN", 16384);
+		addEntry("KBD", 24576);
+	}
+	
+	/**
+	 * predefSymbol_b
+	 * Objective: 
+	 * 	- Adds the second group of predefined symbols to the symbol table
+	 */
+	private void predefSymbol_b(){
+		for(int i = 0; i < 16; i++){
+			addEntry("R"+i, i);
+		}
+	}
+}

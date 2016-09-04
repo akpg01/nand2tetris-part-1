@@ -1,0 +1,97 @@
+package assembler;
+/**
+ * Code
+ * @author akpan
+ * Objective: 
+ * 	- provides the binary codes of all the assembly language mnemonics.
+ */
+public class Code {
+	private String mnemonic; 
+	
+	// constructor
+	public Code(String str){
+		this.mnemonic = str;
+	}
+	/**
+	 * dest
+	 * @param str
+	 * @return
+	 * Objective: returns the binary code of the dest mnemonic (3 bits)
+	 */
+	private String dest(String str){
+		String result = "";
+		switch(str){
+		case "null":
+			result = "000";
+			break;
+		case "M":
+			result = "001";
+			break;
+		case "D":
+			result = "010";
+			break;
+		case "MD": 
+			result = "011";
+			break;
+		case "A":
+			result = "100";
+			break;
+		case "AM": 
+			result = "101";
+			break;
+		case "AD":
+			result = "110";
+			break;
+		case "AMD":
+			result = "111";
+			break;
+		}
+		return result;
+	}
+	/**
+	 * comp
+	 * @param str
+	 * @return
+	 * Objective: returns the binary code of the comp mnemonic (7 bits)
+	 */
+	private String comp(String str){
+		
+	}
+	/**
+	 * jump
+	 * @param str
+	 * @return
+	 * Objective: returns the binary code of the jump mnemonic (3 bits)
+	 */
+	private String jump(String str){
+		String result = "";
+		switch(str){
+		case "null": 
+			result = "000";
+			break;
+		case "JGT":
+			result = "001";
+			break;
+		case "JEQ":
+			result = "010";
+			break;
+		case "JGE":
+			result = "011";
+			break;
+		case "JLT":
+			result = "100";
+			break;
+		case "JNE":
+			result = "101";
+			break;
+		case "JLE":
+			result = "110";
+			break;
+		case "JMP":
+			result = "111";
+			break;
+		}
+		return result;
+	}
+	
+}

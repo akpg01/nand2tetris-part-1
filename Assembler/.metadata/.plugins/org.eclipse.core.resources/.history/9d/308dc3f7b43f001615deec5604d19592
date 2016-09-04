@@ -1,0 +1,10 @@
+package assembler;
+/**
+ * SymbolTable
+ * @author akpan
+ * Maintains a correspondence between symbolic labels and numeric addresses.
+ */
+
+public class SymbolTable {
+
+}

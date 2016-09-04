@@ -1,0 +1,101 @@
+package assembler;
+
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
+
+
+
+public class Main {
+/**
+ * Main
+ * @param args
+ *  The class reads a filename entered at the command prompt.
+ * Objectives:
+ * 	- verifies that a filename has been entered
+ *  - confirms that the file extension is .asm
+ *  - attempts to read the file.
+ */
+	public static void main(String[] args) {
+		// verify that a .asm file has been supplied when program is executed
+		if(args.length < 0)
+			System.err.println("Please enter a valid filename");
+		// read file name
+		File inFile = new File(args[0]);
+		BufferedWriter bw = null;
+
+		// check that file extension is .asm
+		String filename= inFile.toString();
+		String file_extension = filename.substring(filename.lastIndexOf("."));
+		if(!file_extension.equals(".asm")){
+			System.err.println("File extension must be \".asm.\"");
+			System.exit(1);
+		}
+		
+		// output file
+		String outFilename = filename.substring(0,filename.indexOf('.'));
+		String out = outFilename + ".hack";
+		
+		try {
+			FileWriter fw = new FileWriter(out);
+			bw = new BufferedWriter(fw);
+			
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		// send to parser class. 
+		Parser parser = new Parser(inFile);
+		
+		
+		// check whether file has more commands
+		while(parser.hasMoreCommands()){
+			
+			// get the next line in the file
+			parser.advance();
+			// get the command type of the line
+			String command = parser.getCurrentCommand();
+			if(command.equals("") || command.charAt(0) == '/' )
+				continue;
+			String commands = parser.commandType().toString();
+			
+			if(commands.equals("A_COMMAND")){
+				// get the symbol
+				String symbol = parser.symbol();
+				Integer commandCode = Integer.parseInt(symbol);
+				String binaryRep = Integer.toBinaryString(commandCode);
+				String str = appendZeros(binaryRep.length(), binaryRep);
+				writeToFile(str, bw);
+			}
+		}
+	}
+	/**
+	 * appendZeros
+	 * @param n
+	 * @param sr
+	 * @return
+	 */
+	public static String appendZeros(int n, String str){
+		int num = 15-n; 
+		StringBuilder strs = new StringBuilder();
+		
+		for(int i = 0; i < num ; i++){
+			strs.append("0");
+		}
+		return strs.append(str).toString();
+	}
+	/**
+	 * writeToFile
+	 * @param stringData
+	 * @param filename
+	 */
+	
+	public static void writeToFile(String stringData, BufferedWriter bw){
+		try{
+			bw.write(stringData);
+		}catch(IOException e){
+			e.printStackTrace();
+		}
+	}
+
+}

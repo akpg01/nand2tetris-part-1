@@ -1,0 +1,43 @@
+package assembler;
+/**
+ * Code
+ * @author akpan
+ * Objective: 
+ * 	- provides the binary codes of all the assembly language mnemonics.
+ */
+public class Code {
+	private String mnemonic; 
+	
+	// constructor
+	public Code(String str){
+		this.mnemonic = str;
+	}
+	/**
+	 * dest
+	 * @param str
+	 * @return
+	 * Objective: returns the binary code of the dest mnemonic (3 bits)
+	 */
+	private String dest(String str){
+		
+	}
+	/**
+	 * comp
+	 * @param str
+	 * @return
+	 * Objective: returns the binary code of the comp mnemonic (7 bits)
+	 */
+	private String comp(String str){
+		
+	}
+	/**
+	 * jump
+	 * @param str
+	 * @return
+	 * Objective: returns the binary code of the jump mnemonic (3 bits)
+	 */
+	private String jump(String str){
+		
+	}
+	
+}
